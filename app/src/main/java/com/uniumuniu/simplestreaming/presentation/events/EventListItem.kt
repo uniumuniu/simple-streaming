@@ -26,19 +26,15 @@ fun EventListItem(
     clickableEnabled: Boolean,
     onItemClicked: (IBaseEventData) -> Unit,
 ) {
-    // TODO - move to dimensions
-    val bigPadding = 12.dp
-    val smallPadding = 6.dp
-
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(
                 PaddingValues(
-                    start = bigPadding,
-                    top = smallPadding,
-                    end = bigPadding,
-                    bottom = smallPadding
+                    start = 12.dp,
+                    top = 6.dp,
+                    end = 12.dp,
+                    bottom = 6.dp
                 )
             )
             .clickable(enabled = clickableEnabled) {
@@ -58,14 +54,14 @@ fun EventListItem(
                 ),
                 contentDescription = "Event image",
                 modifier = Modifier
-                    .size(128.dp)
-                    .padding(4.dp),
+                    .height(108.dp)
+                    .padding(8.dp),
             )
 
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(top = 12.dp, bottom = 12.dp)
+                    .padding(top = 4.dp, bottom = 6.dp)
             ) {
                 Column {
                     Text(
