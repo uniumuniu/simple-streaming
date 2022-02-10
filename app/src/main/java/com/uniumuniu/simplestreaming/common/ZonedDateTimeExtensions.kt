@@ -26,7 +26,7 @@ fun ZonedDateTime.customFormatDate(): String {
             localDateTime.format(DateTimeFormatter.ofPattern("'Tomorrow', HH:mm"))
         }
         else -> {
-            localDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+            localDateTime.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"))
         }
     }
 }
