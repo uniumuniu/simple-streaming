@@ -6,7 +6,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.uniumuniu.simplestreaming.common.Resource
-import com.uniumuniu.simplestreaming.domain.model.Event
 import com.uniumuniu.simplestreaming.domain.use_case.GetEventsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
@@ -18,17 +17,17 @@ class EventsViewModel @Inject constructor(
     getEventsUseCase: GetEventsUseCase
 ): ViewModel() {
 
-    private val _state: MutableState<List<Event>> = mutableStateOf(listOf<Event>())
-    val state: State<List<Event>> = _state
+    private val _state: MutableState<EventsState> = mutableStateOf(EventsState())
+    val state: State<EventsState> = _state
 
     init {
         getEventsUseCase.invoke().onEach { result ->
             when (result) {
                 is Resource.Success -> {
-                    result.data?.also { _state.value = it }
+                    result.data?.also { _state.value = EventsState(it) }
                 }
                 is Resource.Error -> {
-
+                    result.message?.also { _state.value = EventsState(error = it) }
                 }
             }
         }.launchIn(viewModelScope)

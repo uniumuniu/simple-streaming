@@ -16,7 +16,7 @@ class GetEventsUseCase @Inject constructor(
 ) {
     operator fun invoke(): Flow<Resource<List<Event>>> = flow {
         try {
-            val events = repository.getEvents()
+            val events = repository.getEvents().sortedBy { it.date }
             emit(Resource.Success<List<Event>>(events))
         } catch (e: HttpException) {
             emit(Resource.Error<List<Event>>(e.localizedMessage ?: "An unexpected error occurred"))

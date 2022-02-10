@@ -13,14 +13,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberImagePainter
+import com.uniumuniu.simplestreaming.common.customFormatDate
 import com.uniumuniu.simplestreaming.domain.model.Event
 import com.uniumuniu.simplestreaming.domain.model.IBaseEventData
+import java.time.ZonedDateTime
+
+const val testImageUrl = "https://test.com/image"
 
 @Composable
 fun EventListItem(
     event: IBaseEventData,
     clickableEnabled: Boolean,
-    onItemClicked: (IBaseEventData) -> Unit
+    onItemClicked: (IBaseEventData) -> Unit,
 ) {
     // TODO - move to dimensions
     val bigPadding = 12.dp
@@ -48,19 +52,25 @@ fun EventListItem(
         ) {
 
             Image(
-                painter = rememberImagePainter(event.imageUrl),
-                contentDescription = null,
-                modifier = Modifier.size(128.dp)
+                painter = rememberImagePainter(
+                    data = event.imageUrl,
+                    builder = { if (event.imageUrl == testImageUrl) placeholder(com.uniumuniu.simplestreaming.R.drawable._10176837169_image_header_pdach_1554579780000) }
+                ),
+                contentDescription = "Event image",
+                modifier = Modifier
+                    .size(128.dp)
+                    .padding(4.dp),
             )
 
             Box(
                 modifier = Modifier
                     .fillMaxSize()
+                    .padding(top = 12.dp, bottom = 12.dp)
             ) {
                 Column {
                     Text(
                         text = event.title,
-                        style = MaterialTheme.typography.h5
+                        style = MaterialTheme.typography.subtitle1
                     )
                     Text(
                         text = event.subtitle,
@@ -70,13 +80,12 @@ fun EventListItem(
 
                 Text(
                     modifier = Modifier.align(Alignment.BottomStart),
-                    text = event.date,
+                    text = event.date.customFormatDate(),
                     style = MaterialTheme.typography.body2
                 )
             }
 
         }
-
     }
 }
 
@@ -85,13 +94,14 @@ fun EventListItem(
 fun EventListItemPreview() {
     EventListItem(
         event = Event(
-            date = "Yesterday, 10:30",
+            date = ZonedDateTime.now(),
             id = "1",
-            imageUrl = "",
+            imageUrl = testImageUrl,
             subtitle = "Champions League",
             title = "Manchester vs Juventus",
-            videoUrl = "",
+            videoUrl = "https://test.com/video"
         ),
-        clickableEnabled = false
-    ) {}
+        clickableEnabled = false,
+        onItemClicked = {}
+    )
 }

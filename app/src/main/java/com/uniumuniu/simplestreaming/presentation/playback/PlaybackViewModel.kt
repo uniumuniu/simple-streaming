@@ -4,6 +4,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import com.uniumuniu.simplestreaming.common.Constants
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -15,7 +16,7 @@ class PlaybackViewModel @Inject constructor(
     val state: State<String?>
 
     init {
-        val videoUrl = savedStateHandle.get<String>("videoUrl")
+        val videoUrl = savedStateHandle.get<String>(Constants.VIDEO_URL_KEY)
         state = mutableStateOf(videoUrl)
     }
 }

@@ -3,6 +3,7 @@ package com.uniumuniu.simplestreaming.data.remote.dto
 
 import com.google.gson.annotations.SerializedName
 import com.uniumuniu.simplestreaming.domain.model.ScheduleEvent
+import java.time.ZonedDateTime
 
 data class ScheduleEventDto(
     @SerializedName("date")
@@ -19,7 +20,7 @@ data class ScheduleEventDto(
 
 fun ScheduleEventDto.toScheduleEvent(): ScheduleEvent {
     return ScheduleEvent(
-        date = date,
+        date = ZonedDateTime.parse(date),
         id = id,
         imageUrl = imageUrl,
         subtitle = subtitle,
