@@ -5,7 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -20,12 +20,22 @@ import com.google.android.exoplayer2.ui.PlayerView
 
 @Composable
 fun PlaybackScreen(viewModel: PlaybackViewModel = hiltViewModel()) {
-    PlaybackScreenStateless(viewModel.state.value ?: "")
+    PlaybackScreenStateless(
+        videoUrl = viewModel.state.videoUrl.value,
+        onCreate = { exoPlayer -> viewModel.onCreate(exoPlayer) },
+        onStart = { exoPlayer -> viewModel.onStart(exoPlayer) },
+        onStop = { exoPlayer -> viewModel.onStop(exoPlayer) },
+        onDestroy = { exoPlayer -> viewModel.onDestroy(exoPlayer) }
+    )
 }
 
 @Composable
 fun PlaybackScreenStateless(
-    videoUrl: String
+    videoUrl: String,
+    onCreate: (ExoPlayer) -> Unit,
+    onStart: (ExoPlayer) -> Unit,
+    onStop: (ExoPlayer) -> Unit,
+    onDestroy: (ExoPlayer) -> Unit,
 ) {
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -37,7 +47,6 @@ fun PlaybackScreenStateless(
             ExoPlayer.Builder(context).build().apply {
                 this.setMediaItem(MediaItem.fromUri(videoUrl))
                 this.prepare()
-                this.playWhenReady
             }
         }
 
@@ -47,8 +56,10 @@ fun PlaybackScreenStateless(
         ) {
             val lifecycleObserver = LifecycleEventObserver { _, event ->
                 when (event) {
-                    Lifecycle.Event.ON_START -> exoPlayer.play()
-                    Lifecycle.Event.ON_STOP -> exoPlayer.pause()
+                    Lifecycle.Event.ON_CREATE -> onCreate(exoPlayer)
+                    Lifecycle.Event.ON_START -> onStart(exoPlayer)
+                    Lifecycle.Event.ON_STOP -> onStop(exoPlayer)
+                    Lifecycle.Event.ON_DESTROY -> onDestroy(exoPlayer)
                 }
             }
 
