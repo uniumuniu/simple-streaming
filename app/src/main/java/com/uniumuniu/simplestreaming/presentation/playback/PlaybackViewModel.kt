@@ -22,7 +22,7 @@ class PlaybackViewModel @Inject constructor(
     }
 
     fun onCreate(exoPlayer: ExoPlayer) {
-        exoPlayer.seekTo(state.exoPlayer.value)
+        exoPlayer.seekTo(state.videoPosition.value)
     }
 
     fun onStart(exoPlayer: ExoPlayer) {
@@ -34,11 +34,11 @@ class PlaybackViewModel @Inject constructor(
     }
 
     fun onDestroy(exoPlayer: ExoPlayer) {
-        state.exoPlayer.value = exoPlayer.currentPosition
+        state.videoPosition.value = exoPlayer.currentPosition
     }
 }
 
 data class PlaybackStateContainer(
     var videoUrl: MutableState<String> = mutableStateOf(""),
-    var exoPlayer: MutableState<Long> = mutableStateOf(0),
+    var videoPosition: MutableState<Long> = mutableStateOf(0),
 )
