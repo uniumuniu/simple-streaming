@@ -56,7 +56,7 @@ fun ScheduleScreenPreview() {
             ScheduleEvent(
                 date = ZonedDateTime.now(),
                 id = "2",
-                imageUrl = "https://test.com/image2",
+                imageUrl = "https://test.com/image",
                 subtitle = "Champions League",
                 title = "Manchester vs Milan",
             )
